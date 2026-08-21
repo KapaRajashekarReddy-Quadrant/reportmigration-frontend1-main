@@ -66,22 +66,30 @@ const Dashboard = () => {
   const [jobs, setJobs] = useState<MigrationJob[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+<<<<<<< HEAD
   // 2. Real signed-in user's email. If it's missing, the session's stale/gone —
   // don't silently fall back to a placeholder and hit the API with it (that
   // request gets CORS-blocked server-side and just spams the console).
   const CURRENT_USER_EMAIL = sessionStorage.getItem("azure_user_email");
+=======
+  // 2. FIXED VARIABLE: Change this later when user auth is ready!
+  const CURRENT_USER_EMAIL = sessionStorage.getItem("azure_user_email") || "dummy@dummy.com";
+>>>>>>> 22fc0965668cef4be6d80c99e95f3e91a68c8b18
 
   // 3. Fetch data from your live Azure Backend
   useEffect(() => {
     // Don't clear powerbi_authenticated — it breaks auth state
     sessionStorage.removeItem("selected_workbook");
 
+<<<<<<< HEAD
     if (!CURRENT_USER_EMAIL) {
       console.warn("No signed-in user email found in session — redirecting to login.");
       navigate("/login");
       return;
     }
 
+=======
+>>>>>>> 22fc0965668cef4be6d80c99e95f3e91a68c8b18
     const fetchJobs = async () => {
       try {
         const userId = encodeURIComponent(CURRENT_USER_EMAIL);

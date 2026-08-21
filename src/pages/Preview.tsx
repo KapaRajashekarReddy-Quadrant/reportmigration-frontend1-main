@@ -397,6 +397,7 @@ export default function PowerBIReport() {
       }
 
       const cleanReportName = rawReportName.replace(/[^a-zA-Z0-9]/g, "");
+<<<<<<< HEAD
 
       /* ----------------------------------------------------
          🔎 DYNAMIC TABLE RESOLUTION (replaces hardcoded guesses)
@@ -427,6 +428,10 @@ export default function PowerBIReport() {
         const ordered = [...knownGoodTables, ...metadataTables, ...GENERIC_LAST_RESORT];
         return [...new Set(ordered)].filter((t) => t && t !== excludeTable);
       };
+=======
+      const FALLBACK_TABLES = [rawReportName, cleanReportName, "Sheet1", "Table1", "Extract", "Data", "MainTable"];
+      const uniqueFallbacks = [...new Set(FALLBACK_TABLES)];
+>>>>>>> 22fc0965668cef4be6d80c99e95f3e91a68c8b18
 
       let pages = await report.getPages();
 
@@ -544,14 +549,22 @@ export default function PowerBIReport() {
                       column: sanitizedCol,
                     });
                     bound = true;
+<<<<<<< HEAD
                     knownGoodTables.add(b.table);
+=======
+>>>>>>> 22fc0965668cef4be6d80c99e95f3e91a68c8b18
                     console.log(`✅ Bound successfully: ${b.table}.${sanitizedCol} → ${technicalRole}`);
                   } catch (e: any) {
                     console.warn(`⚠️ Binding failed for ${b.table}.${sanitizedCol} → ${technicalRole}:`, e?.message || e);
                   }
 
                   if (!bound) {
+<<<<<<< HEAD
                     for (const fallbackTable of getFallbackOrder(b.table)) {
+=======
+                    for (const fallbackTable of uniqueFallbacks) {
+                      if (fallbackTable === b.table) continue;
+>>>>>>> 22fc0965668cef4be6d80c99e95f3e91a68c8b18
                       try {
                         await visual.addDataField(technicalRole, {
                           $schema: "http://powerbi.com/product/schema#column",
@@ -559,7 +572,10 @@ export default function PowerBIReport() {
                           column: sanitizedCol,
                         });
                         bound = true;
+<<<<<<< HEAD
                         knownGoodTables.add(fallbackTable);
+=======
+>>>>>>> 22fc0965668cef4be6d80c99e95f3e91a68c8b18
                         console.log(`✅ Fallback bound: ${fallbackTable}.${sanitizedCol} → ${technicalRole}`);
                         break;
                       } catch (e: any) {
@@ -569,9 +585,13 @@ export default function PowerBIReport() {
                   }
 
                   if (!bound) {
+<<<<<<< HEAD
                     console.error(
                       `❌ FAILED to bind column "${sanitizedCol}" (original: "${rawCol}") to any table. Tried: [${b.table}, ${getFallbackOrder(b.table).join(", ")}]`,
                     );
+=======
+                    console.error(`❌ FAILED to bind column "${sanitizedCol}" (original: "${rawCol}") to any table. Tried: [${b.table}, ${uniqueFallbacks.join(', ')}]`);
+>>>>>>> 22fc0965668cef4be6d80c99e95f3e91a68c8b18
                   }
                 }
               }
@@ -690,9 +710,12 @@ export default function PowerBIReport() {
             createStaticVisuals(report);
           });
 
+<<<<<<< HEAD
           let schemaDriftRetries = 0;
           const MAX_SCHEMA_DRIFT_RETRIES = 3;
 
+=======
+>>>>>>> 22fc0965668cef4be6d80c99e95f3e91a68c8b18
           report.on("error", (e: any) => {
             console.group("❌ DEBUG: Power BI Error Event");
             console.error("Full error event:", JSON.stringify(e, null, 2));
@@ -711,6 +734,7 @@ export default function PowerBIReport() {
               if (e.detail.clusterUri) console.error("Cluster URI:", e.detail.clusterUri);
             }
             console.groupEnd();
+<<<<<<< HEAD
 
             // "The key didn't match any rows in the table" / Mashup ErrorCode 10061
             // means the Lakehouse SQL Analytics Endpoint hadn't finished
@@ -732,6 +756,8 @@ export default function PowerBIReport() {
               return;
             }
 
+=======
+>>>>>>> 22fc0965668cef4be6d80c99e95f3e91a68c8b18
             setStatus("Power BI Error");
             setStatusType("error");
           });
